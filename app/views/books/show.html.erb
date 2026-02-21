@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-3">
+      <%= render "layouts/sidebar", user: @user, book: @book_new, context: "user_show" %>
+    </div>
+
+    <div class="col-md-8 offset-md-1">
+      <h2>Book detail</h2>
+
+      <table class="table align-middle">
+        <tbody>
+          <tr>
+            <td style="width: 140px;">
+              <div class="d-flex align-items-center justify-content-center">
+                <%= profile_image_tag(@book.user, size: 100) %>
+              </div>
+              <div class="mt-2">
+                <%= link_to @book.user.name, user_path(@book.user), class: "text-decoration-none fw-bold" %>
+              </div>
+            </td>
+
+            <td style="width: 35%;">
+              <%= @book.title %>
+            </td>
+
+            <td>
+              <%= @book.body %>
+            </td>
+
+            <% if @book.user == current_user %>
+              <td class="text-end" style="width: 180px;">
+                <%= link_to "Edit", edit_book_path(@book), class: "btn btn-success btn-sm" %>
+                <%= link_to "Destroy", book_path(@book),
+                            data: { turbo_method: :delete, turbo_confirm: "削除しますか？" },
+                            class: "btn btn-danger btn-sm ms-2" %>
+              </td>
+            <% end %>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -8,3 +8,11 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+.col-sm-3
+   {
+    position: fixed;
+    top: 100px;
+    bottom: 0;
+    left: 30px;
+    display: block;
+   }
