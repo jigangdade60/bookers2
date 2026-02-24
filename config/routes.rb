@@ -16,7 +16,13 @@ Rails.application.routes.draw do
   resources :books, only: [:index, :show, :create, :show, :edit, :update, :destroy]
 
   resource :session, only: [:new, :create, :destroy]
+
+  resources :books do
+  resource :favorite, only: [:create, :destroy]
+  end
   
   resources :passwords, param: :token
+
+ 
 
 end

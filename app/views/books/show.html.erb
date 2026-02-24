@@ -35,6 +35,19 @@
                             class: "btn btn-danger btn-sm ms-2" %>
               </td>
             <% end %>
+             <% if @book.favorited_by?(Current.user) %>
+             <p>
+             <%= link_to book_favorite_path(@book), data: { turbo_method: :delete } do %>
+             ♥<%= @book.favorites.count %> いいね
+             <% end %>
+             </p>
+             <% else %>
+             <p>
+             <%= link_to book_favorite_path(@book), data: { turbo_method: "post" } do %>
+             ♡<%= @book.favorites.count %> いいね
+             <% end %>
+             </p>
+             <% end %>
           </tr>
         </tbody>
       </table>

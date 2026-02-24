@@ -2,8 +2,8 @@ class User < ApplicationRecord
 
   has_one_attached :profile_image
   has_many :sessions, dependent: :destroy
-
   has_many :books, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
 
   validates :email_address, presence: true
