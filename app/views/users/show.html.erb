@@ -37,6 +37,7 @@
                                 class: "btn btn-danger btn-sm ms-2" %>
                   <% end %>
               </td>
+              <td><%= link_to "#{b.book_comments.count} コメント", book_path(b) %></td>
             </tr>
           <% end %>
         </tbody>

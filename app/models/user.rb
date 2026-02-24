@@ -4,6 +4,15 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :books, dependent: :destroy
   has_many :favorites, dependent: :destroy
+  has_many :book_comments, dependent: :destroy
+
+    def get_profile_image(width, height)
+    if profile_image.attached?
+      profile_image.variant(resize_to_limit: [width, height]).processed
+    else
+      'no_image.jpg'
+    end
+  end
 
 
   validates :email_address, presence: true

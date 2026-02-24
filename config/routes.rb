@@ -23,6 +23,10 @@ Rails.application.routes.draw do
   
   resources :passwords, param: :token
 
+  resources :book, only: [:new, :create, :index, :show, :destroy] do
+    resources :book_comments, only: [:create, :destroy]
+  end
+
  
 
 end
