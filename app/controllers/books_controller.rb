@@ -1,35 +1,27 @@
 class BooksController < ApplicationController
-  before_action :identify_book, only: %i[show edit update destroy]
-  before_action :is_maching_user, only: %i[edit update destroy]
+  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :ensure_correct_user, only: [:edit, :update, :destroy]
 
   def index
-    @user  = current_user
-    @book  = Book.new
-    @books = Book.includes(:user).order(created_at: :desc)
-  end
-
-  def show
-    @user = @book.user
-    @book_new = Book.new
-    @book_comment = BookComment.new
+    @books = Book.all
+    @book = Book.new
   end
 
   def create
-    @book = current_user.books.new(book_params)
-    
-
+    @book = Book.new(book_params)
+    @book.user_id = Current.user.id
     if @book.save
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
-        @user  = current_user
-        @books = Book.includes(:user).order(created_at: :desc)
-        render :index, status: :unprocessable_entity
-      
+      @books = Book.all
+      render :index,status: :unprocessable_entity
     end
   end
 
-  
-  def edit; 
+  def show
+    @book_comment = BookComment.new
+  end
+  def edit
   end
 
   def update
@@ -42,22 +34,22 @@ class BooksController < ApplicationController
 
   def destroy
     @book.destroy
-    redirect_to books_path, notice: "Book deleted."
+    redirect_to books_path
   end
 
   private
 
-  def identify_book
+  def book_params
+    params.require(:book).permit(:title, :body)
+  end
+
+  def set_book
     @book = Book.find(params[:id])
   end
 
-  def is_maching_user
-    unless @book.user == current_user
-      redirect_to books_path, alert: "You don't have permission to access."
+  def ensure_correct_user
+    unless @book.user == Current.user
+      redirect_to books_path
     end
-  end
-
-  def book_params
-    params.require(:book).permit(:title, :body)
   end
 end

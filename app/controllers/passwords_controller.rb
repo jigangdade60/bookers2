@@ -2,23 +2,16 @@ class PasswordsController < ApplicationController
   allow_unauthenticated_access
   before_action :set_user_by_token, only: %i[ edit update ]
 
-
   def new
   end
 
   def create
-    if params[:email_address].blank?
-    @error_message = "Email can't be blank"
-    render :new, status: :unprocessable_entity
-    return
-    end
-
     if user = User.find_by(email_address: params[:email_address])
       PasswordsMailer.reset(user).deliver_later
     end
 
     redirect_to new_session_path, notice: "Password reset instructions sent (if user with that email address exists)."
-    end
+  end
 
   def edit
   end

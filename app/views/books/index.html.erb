@@ -1,48 +1,15 @@
-<% if @book.errors.any? %>
-  <div class="alert alert-danger">
-    <ul>
-      <% @book.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
-
-<div class="container mt-4">
-  <div class="row">
-    <div class="col-md-3">
-      <%= render "layouts/sidebar", user: @user, book: @book, context: "books_index" %>
+<div class='container px-5 px-sm-0'>
+  <%= render 'layouts/errors', obj: @book %>
+  <div class='row'>
+    <div class='col-md-3'>
+      <h2>User info</h2>
+      <%= render 'users/info', user: Current.user %>
+      <h2 class="mt-3">New book</h2>
+      <%= render 'form', book: @book %>
     </div>
-
-    <div class="col-md-8 offset-md-1">
+    <div class='col-md-8 offset-md-1'>
       <h2>Books</h2>
-
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th style="width: 120px;"></th>
-            <th>Title</th>
-            <th>Opinion</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @books.each do |b| %>
-            <tr>
-              <td>
-                <div class="d-flex align-items-center justify-content-center">
-                  <%= link_to user_path(b.user) do %>
-                    <%= profile_image_tag(b.user, size: 60) %>
-                  <% end %>
-                </div>
-              </td>
-              <td><%= link_to b.title, book_path(b) %></td>
-              <td><%= b.body %></td>
-              <td><%= link_to "#{b.book_comments.count} コメント", book_path(b) %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+      <%= render 'index', books: @books%>
     </div>
   </div>
 </div>

@@ -6,16 +6,16 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if (user = User.find_by(name: params[:name]))&.authenticate(params[:password])
+    if user = User.authenticate_by(params.permit(:name, :password))
       start_new_session_for user
       redirect_to user_path(user), notice: "Signed in successfully."
     else
-     
+      redirect_to new_session_path, alert: "Try another name or password."
     end
   end
 
   def destroy
     terminate_session
-    redirect_to root_path, notice: "Signed out successfully."
+    redirect_to root_path , notice: "Signed out successfully."
   end
 end

@@ -1,32 +1,30 @@
 Rails.application.routes.draw do
- 
-    root "homes#top"
-
-  get "home/about", to: "homes#about", as: :about
-
-  get "session/new", to: "sessions#new", as: :new_session
-
-  post "session/new", to: "sessions#create", as: :session
-  
-  delete "users/sign_out", to: "sessions#destroy", as: :destroy_session
-
-
-  resources :users, only: [:new, :create, :index, :show, :edit, :update], path_names: { new: 'sign_up' }
-
-  resources :books, only: [:index, :show, :create, :show, :edit, :update, :destroy]
-
-  resource :session, only: [:new, :create, :destroy]
-
-  resources :books do
-  resource :favorite, only: [:create, :destroy]
-  end
-  
+  resource :session
   resources :passwords, param: :token
-
-  resources :book, only: [:new, :create, :index, :show, :destroy] do
+  resources :books, only: [:index,:show,:edit,:create,:destroy,:update] do
     resources :book_comments, only: [:create, :destroy]
+    resource :favorites, only: [:create, :destroy]
   end
+  resources :users, path_names: { new: 'sign_up' } do
+    resource :relationships, only: [:create, :destroy]
+    get 'followings' => 'relationships#followings', as: 'followings'
+    get 'followers' => 'relationships#followers', as: 'followers'
+  end
+  get '/search', to: 'searches#search'
 
- 
+  root :to =>"homes#top"
+  get "home/about"=>"homes#about"
 
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+
+  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
+  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
+  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+  # Defines the root path route ("/")
+  # root "posts#index"
 end
