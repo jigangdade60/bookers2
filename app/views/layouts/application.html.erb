@@ -30,7 +30,7 @@
       <%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
       <%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
       <div class="d-flex justify-content-center mb-2">
-      
+      <%= render 'searches/form' %>
       </div>      
       <%= yield %>
       </main>
